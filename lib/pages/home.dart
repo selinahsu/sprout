@@ -30,22 +30,16 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  String imgPath; 
+  String imgPath;
   var crUsage = 1680.39;
-  var fullBalance = 500.0; 
-  var minPayment = 10; 
+  var fullBalance = 500.0;
+  var minPayment = 10;
   DateTime dueDate = DateTime.now();
   DateTime paidDate = DateTime.now().add(Duration(days: 5));
   bool paidThisMonth; 
 
-  String _setImage() {
-    setState(() => {
-      //if (paidDate.isBefore(dueDate))
-        imgPath = 'assets/images/1_happy.svg'
-    });
-  }
-
   @override
+  var countValue = 0;
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -97,6 +91,11 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
             ),
             GestureDetector(
+              onTap: () => {
+                setState(() { // setState() triggers the build() function
+                  countValue = (countValue+1)%4;
+                }),
+              },
                 child: Container(
                   height: 350.0,
                   child: Stack(
@@ -106,11 +105,11 @@ class _MyHomePageState extends State<MyHomePage> {
                       'assets/images/circle.svg',
                     ),
                     Positioned(
-                      height: 96.0,
-                      bottom: 100.0,
-                      left: 40,
-                      child: SvgPicture.asset(
-                        'assets/images/1_happy.svg',
+                      width: 140.0,
+                      bottom: 95,
+                      //left: 0,
+                      child: Image.asset(
+                        'assets/images/${countValue}_happy.png',
                       )
                     ),
                   ],
@@ -123,11 +122,12 @@ class _MyHomePageState extends State<MyHomePage> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
                     Text(
-                      "Current Billing Cycle:",
-                      //style: TextTheme.,
+                      "CURRENT BILLING CYCLE:",
+                      style: TextStyle(fontSize: 10)
                     ),
                     Text(
-                      "February 10th - March 11th:"
+                      "February 10th - March 11th:",
+                      style: TextStyle(fontSize: 16),
                     ),
                   ],
                 ),
@@ -147,21 +147,22 @@ class _MyHomePageState extends State<MyHomePage> {
                             Padding(
                               padding: const EdgeInsets.all(16.0),
                               child: Row(
-                              children: <Widget>[
-                                Container(
-                                  child: CircularPercentIndicator(
-                                    radius: 60.0,
-                                    lineWidth: 5.0,
-                                    percent: 1.0,
-                                    center: Text("100%",
-                                      style: TextStyle(color: Colors.green),
+                                children: <Widget>[
+                                  Container(
+                                    child: CircularPercentIndicator(
+                                      radius: 60.0,
+                                      lineWidth: 5.0,
+                                      percent: 0.84,
+                                      center: Text("84%",
+                                        style: TextStyle(color: Colors.green),
+                                      ),
+                                      progressColor: Colors.green,
                                     ),
-                                    progressColor: Colors.green,
                                   ),
-                                ),
                                 Padding(
-                                    padding: EdgeInsets.only(left: 16),
-                                    child: Column(
+                                  padding: EdgeInsets.only(left: 16),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
                                     children: <Widget>[
                                       Text(
                                         "\$${crUsage.toString()} of \$2000",
@@ -172,21 +173,20 @@ class _MyHomePageState extends State<MyHomePage> {
                                       Text(
                                         "\$32.61 pending",
                                         style: TextStyle(
-                                          fontWeight: FontWeight.w500,
                                           fontSize: 14),
                                       ),     
                                     ],
                                   ),
                                 ),
                               ],
-                          ),
                             ),
+                          ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[
                               ClipRRect(
                                 borderRadius: BorderRadius.circular(10),
-                              child: Container(
+                                child: Container(
                                 width: 350,
                                 padding: EdgeInsets.all(16.0),
                                 decoration: new BoxDecoration(
@@ -266,13 +266,13 @@ class _MyHomePageState extends State<MyHomePage> {
                     borderRadius: BorderRadius.circular(10),
                     child: Container(
                       padding: EdgeInsets.all(16),
-                      color: Colors.lightGreen[100],
+                      color: Colors.white,
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           Padding(
                             padding: EdgeInsets.only(bottom: 10),
-                              child: SvgPicture.asset('assets/images/1_happy.svg',
+                              child: Image.asset('assets/images/checkmark.png',
                               height: 22,
                             ),
                           ),
@@ -285,11 +285,6 @@ class _MyHomePageState extends State<MyHomePage> {
                               height: 1.25,
                             ),
                           ),
-                          // Text(
-                          //   "Updated today",
-                          //   style: TextStyle(
-                          //     fontSize: 8),
-                          //),
                         ], 
                       ),
                     ),
@@ -298,8 +293,81 @@ class _MyHomePageState extends State<MyHomePage> {
                     borderRadius: BorderRadius.circular(10),
                     child: Container(
                       padding: EdgeInsets.all(16),
-                      child: Text('He\'d have you all unravel at the'),
-                      color: Colors.lightGreen[100], 
+                      color: Colors.white,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Padding(
+                            padding: EdgeInsets.only(bottom: 10),
+                              child: Image.asset('assets/images/clock.png',
+                              height: 22,
+                            ),
+                          ),
+                          Text('Payment made on time!',
+                            style: TextStyle(fontSize: 16),
+                          ),
+                          Text('You made a payment for your Jan 9 - Feb 10 statment before the due date of Mar 2, 2020! 💰',
+                            style: TextStyle(
+                              fontSize: 14,
+                              height: 1.25,
+                            ),
+                          ),
+                        ], 
+                      ),
+                    ),
+                  ),
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(10),
+                    child: Container(
+                      padding: EdgeInsets.all(16),
+                      color: Colors.white,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Padding(
+                            padding: EdgeInsets.only(bottom: 10),
+                              child: Image.asset('assets/images/pie.png',
+                              height: 22,
+                            ),
+                          ),
+                          Text('Credit usage under 30%!',
+                            style: TextStyle(fontSize: 16),
+                          ),
+                          Text('Your credit usage has been under 30% for 4 days. Keep up the great work!',
+                            style: TextStyle(
+                              fontSize: 14,
+                              height: 1.25,
+                            ),
+                          ),
+                        ], 
+                      ),
+                    ),
+                  ),
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(10),
+                    child: Container(
+                      padding: EdgeInsets.all(16),
+                      color: Colors.white,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Padding(
+                            padding: EdgeInsets.only(bottom: 10),
+                              child: Image.asset('assets/images/dollar.png',
+                              height: 22,
+                            ),
+                          ),
+                          Text('Credit score increase',
+                            style: TextStyle(fontSize: 16),
+                          ),
+                          Text('Your credit score increased from 659 to 752',
+                            style: TextStyle(
+                              fontSize: 14,
+                              height: 1.25,
+                            ),
+                          ),
+                        ], 
+                      ),
                     ),
                   ),
                 ],
